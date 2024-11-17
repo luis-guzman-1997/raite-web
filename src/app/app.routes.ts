@@ -1,6 +1,11 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
+import { PrimaryComponent } from './pages/primary/primary.component';
+import { CanActivateGuard } from './auth/can-activate.guard';
 
 export const routes: Routes = [
-    { path: '', component: HomeComponent }
+    { path: 'primary', component: PrimaryComponent, canActivate: [CanActivateGuard] },  // Ruta protegida
+    { path: 'home', component: HomeComponent },  // Ruta pública
+    { path: '', component: HomeComponent },  // Ruta pública
+    { path: '', redirectTo: '/home', pathMatch: 'full' },
 ];

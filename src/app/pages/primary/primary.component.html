@@ -1,0 +1,16 @@
+<div class="container text-center">
+    <h1>Bienvenido a Raite, {{ user?.displayName || 'Usuario' }}!</h1>
+    <p class="lead">Correo electrónico: {{ user?.email }}</p>
+    
+    <!-- Mostrar foto de perfil si existe -->
+    <div *ngIf="user?.photoURL; else noPhoto">
+      <img [src]="user?.photoURL" alt="Foto de perfil" class="img-fluid rounded-circle" style="max-width: 150px; max-height: 150px;">
+    </div>
+    
+    <ng-template #noPhoto>
+      <p>No hay foto de perfil disponible.</p>
+    </ng-template>
+  
+    <!-- Botón para cerrar sesión -->
+    <button class="btn btn-danger mt-3" (click)="logout()">Cerrar sesión</button>
+  </div>
