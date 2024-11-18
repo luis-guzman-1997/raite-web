@@ -1,16 +1,41 @@
-<div class="container text-center">
-    <h1>Bienvenido a Raite, {{ user?.displayName || 'Usuario' }}!</h1>
-    <p class="lead">Correo electrónico: {{ user?.email }}</p>
-    
-    <!-- Mostrar foto de perfil si existe -->
-    <div *ngIf="user?.photoURL; else noPhoto">
-      <img [src]="user?.photoURL" alt="Foto de perfil" class="img-fluid rounded-circle" style="max-width: 150px; max-height: 150px;">
-    </div>
-    
-    <ng-template #noPhoto>
-      <p>No hay foto de perfil disponible.</p>
-    </ng-template>
-  
-    <!-- Botón para cerrar sesión -->
-    <button class="btn btn-danger mt-3" (click)="logout()">Cerrar sesión</button>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">RAITE</a>
+
   </div>
+</nav>
+
+
+<app-slide></app-slide>
+<!-- Contenedor de bienvenida -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <p class="text-end mt-2">
+        <a class="nav-link text-danger" (click)="logout()">
+          Salir de RAITE <i class="fa fa-sign-out"></i>
+        </a>
+      </p>
+
+      <h1 class="display-4 fw-bold text-dark mt-2">¡Bienvenido a RAITE {{ user?.displayName || 'Usuario' }}!</h1>
+
+      <p class="lead text-muted mb-0">
+        Tu solución de transporte eficiente, cómoda y segura.
+      </p>
+
+
+
+    </div>
+    <div class="col-lg-12">
+
+      <div class="d-grid gap-2 mt-5">
+        <button class="btn btn-dark btn-lg" type="button">
+          <i class="fa fa-map-marker fa-lg me-2"></i> ¡Quiero un Viaje!
+        </button>
+      </div>
+
+
+    </div>
+  </div>
+</div>

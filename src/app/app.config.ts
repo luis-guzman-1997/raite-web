@@ -15,5 +15,13 @@ export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), provideServiceWorker('ngsw-worker.js', {
     enabled: !isDevMode(),
     registrationStrategy: 'registerWhenStable:30000'
-  }), provideFirebaseApp(() => initializeApp(environment.firebaseConf)), provideAuth(() => getAuth()), provideAnalytics(() => getAnalytics()), ScreenTrackingService, UserTrackingService, provideFirestore(() => getFirestore()), provideDatabase(() => getDatabase()), provideStorage(() => getStorage())]
+  }), provideFirebaseApp(() => initializeApp(environment.firebaseConf)),
+  provideAuth(() => getAuth()),
+  provideAnalytics(() => getAnalytics()),
+    ScreenTrackingService,
+    UserTrackingService,
+  provideFirestore(() => getFirestore()),
+  provideDatabase(() => getDatabase()),
+  provideStorage(() => getStorage())
+  ]
 };

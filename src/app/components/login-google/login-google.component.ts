@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
 import { Component, Optional } from '@angular/core';
 import { Router } from '@angular/router';
-import { getDatabase, ref, set } from 'firebase/database';
+import { getDatabase, ref, set, update, get } from 'firebase/database';
 
 @Component({
   selector: 'app-login-google',
@@ -11,12 +11,12 @@ import { getDatabase, ref, set } from 'firebase/database';
     CommonModule
   ],
   templateUrl: './login-google.component.html',
-  styleUrl: './login-google.component.scss'
+  styleUrls: ['./login-google.component.scss'] // Ajustado: styles
 })
 export class LoginGoogleComponent {
   redirect = ['/primary'];
 
-  constructor(@Optional() private auth: Auth, private router: Router) {}
+  constructor(@Optional() private auth: Auth, private router: Router) { }
 
   // Método para login y redirección
   async loginWithGoogle() {
@@ -30,15 +30,15 @@ export class LoginGoogleComponent {
           uid: result.user.uid,
           email: result.user.email,
           displayName: result.user.displayName,
-          photoURL: result.user.photoURL,  // Foto de perfil
+          photoURL: result.user.photoURL, // Foto de perfil
         };
 
         sessionStorage.setItem('user', JSON.stringify(userInfo));
         console.log('Usuario logueado:', userInfo);
 
-        // Llamar a la función para guardar la foto en Firebase Realtime Database
+        // Llamar a la función para guardar o actualizar la foto en Firebase Realtime Database
         if (result.user.photoURL) {
-          await this.saveProfileImage(result.user.photoURL, result.user.uid);
+          await this.saveProfileImage(result.user.photoURL, result.user.uid, result.user.email ?? '');
         }
       }
 
@@ -49,22 +49,30 @@ export class LoginGoogleComponent {
     }
   }
 
-  // Método para guardar la imagen en Firebase Realtime Database
-  async saveProfileImage(photoURL: string, uid: string) {
+  // Método para guardar o actualizar la imagen en Firebase Realtime Database
+  async saveProfileImage(photoURL: string, uid: string, email: string) {
     try {
       if (photoURL) {
-        // Guardar la URL de la foto en Realtime Database
         const db = getDatabase();
-        const userRef = ref(db, 'users/' + uid); // Ruta donde se guarda la información del usuario
+        const userRef = ref(db, 'users/' + uid);
 
-        await set(userRef, {
-          photoURL: photoURL, // Almacenar la URL de la imagen
-        });
-
-        console.log('Foto de perfil guardada en Realtime Database:', photoURL);
+        // Verificar si el usuario ya existe en la base de datos
+        const snapshot = await get(userRef);
+        if (snapshot.exists()) {
+          // Si ya existe, actualizar solo la URL de la foto
+         // await update(userRef, { photoURL, email });
+          console.log('Foto de perfil actualizada en Realtime Database:', photoURL);
+        } else {
+          // Si no existe, crear un nuevo registro
+          await set(userRef, {
+            email,
+            photoURL,
+          });
+          console.log('Foto de perfil guardada en Realtime Database:', photoURL);
+        }
       }
     } catch (error) {
-      console.error('Error al guardar la imagen en Realtime Database:', error);
+      console.error('Error al guardar o actualizar la imagen en Realtime Database:', error);
     }
   }
 }

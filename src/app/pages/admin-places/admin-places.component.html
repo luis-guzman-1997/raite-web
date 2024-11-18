@@ -1,0 +1,37 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-12">
+      <div id="map" class="border rounded" style="height: 400px;"></div>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-md-6">
+      <label for="placeName" class="form-label">Nombre del Lugar:</label>
+      <input 
+        type="text" 
+        id="placeName" 
+        [(ngModel)]="placeName" 
+        class="form-control" 
+        placeholder="Ingresa el nombre del lugar">
+    </div>
+    <div class="col-md-6">
+      <label for="district" class="form-label">Distrito:</label>
+      <input 
+        type="text" 
+        id="district" 
+        [(ngModel)]="district" 
+        class="form-control" 
+        placeholder="Ingresa el distrito">
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-12 text-center">
+      <button 
+        class="btn btn-primary btn-lg" 
+        (click)="saveLocation()" 
+        [disabled]="!selectedLocation || !placeName || !district">
+        Guardar Ubicación
+      </button>
+    </div>
+  </div>
+</div>
